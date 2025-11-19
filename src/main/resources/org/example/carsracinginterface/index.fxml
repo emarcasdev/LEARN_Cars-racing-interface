@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.Rectangle?>
+<?import java.net.URL?>
+
+<AnchorPane fx:controller="org.example.carsracinginterface.AppController" xmlns:fx="http://javafx.com/fxml" styleClass="app">
+    <stylesheets><URL value="@styles/index.css" /></stylesheets>
+    <children>
+        <Label text="F1 JavaFX Racing" layoutX="30" layoutY="15" styleClass="title"/>
+        <Button text="1, 2, 3, GO!!!" fx:id="startButton" layoutX="30.0" layoutY="80.0" onAction="#startRace" styleClass="start-button"/>
+
+        <!-- PISTA DE CARRERAS -->
+        <AnchorPane fx:id="raceTrack" layoutX="30" layoutY="140" prefWidth="640" prefHeight="440" styleClass="racetrack">
+            <children>
+                <!-- META -->
+                <Rectangle layoutX="580.0" layoutY="30.0" width="8.0" height="380.0" styleClass="meta"/>
+
+                <!-- COCHES -->
+                <ImageView fx:id="ferrariCar" fitWidth="130" fitHeight="70" layoutX="20" layoutY="50" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@images/ferrari.png"/>
+                    </image>
+                </ImageView>
+                <ImageView fx:id="redBullCar" fitWidth="130" fitHeight="70" layoutX="20" layoutY="150" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@images/red-bull.png"/>
+                    </image>
+                </ImageView>
+                <ImageView fx:id="astonMartinCar" fitWidth="130" fitHeight="70" layoutX="20" layoutY="250" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@images/aston-martin.png"/>
+                    </image>
+                </ImageView>
+                <ImageView fx:id="williamsCar" fitWidth="130" fitHeight="70" layoutX="20" layoutY="350" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@images/williams.png"/>
+                    </image>
+                </ImageView>
+            </children>
+        </AnchorPane>
+
+        <!-- CLASIFICACION -->
+        <VBox layoutX="30" layoutY="600" prefWidth="640" prefHeight="200" spacing="10" styleClass="classification-card">
+            <children>
+                <Label text="Clasificación" styleClass="classification-title"/>
+                <TextArea fx:id="classification" prefWidth="620" prefHeight="180" editable="false" wrapText="true" styleClass="classification-positions"/>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
