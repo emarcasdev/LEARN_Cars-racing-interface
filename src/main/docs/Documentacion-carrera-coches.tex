@@ -1,0 +1,218 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage[margin=2.5cm]{geometry}
+
+% ===== Numeración de secciones =====
+\renewcommand\thesection{\arabic{section}}
+\makeatletter
+\makeatother
+
+\usepackage[hidelinks]{hyperref}
+
+% ===== Imágenes =====
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.png}
+\graphicspath{{images/}}
+
+% ===== Tablas =====
+\usepackage{array}
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ===== Estilos para el recuadro de código (opcional) =====
+\usepackage{xcolor}
+\usepackage{listings}
+\definecolor{codebg}{RGB}{245,245,245}
+\lstdefinestyle{java}{
+  language=Java,
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  frame=single,
+  breaklines=true,
+  showstringspaces=false
+}
+
+\title{DOCUMENTACIÓN\\\LARGE CARRERA DE COCHES EN JAVAFX}
+\author{Eder Martínez Castro}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\clearpage
+
+\section{Análisis y Especificación de Requisitos}
+\subsection{Descripción del problema}
+\noindent Se nos solicita crear un \textbf{programa en Java} que simule una \textbf{carrera de coches} usando \textbf{hilos}, aparte de crearle una interfaz gráfica utilizando \texttt{JavaFX}.
+Cada coche se ejecutará en un hilo independiente y compite contra los demás para poder llegar a la meta lo antes posible.
+
+\begin{itemize}
+  \item Cada \textbf{coche} tiene un \texttt{nombre}, una misma \texttt{distancia total} a recorrer y una \texttt{velocidad máxima}.
+  \item El avance para cada coche será \textbf{aleatorio} dentro de su velocidad máxima para así poder simular cambios de velocidad durante la carrera.
+  \item Cada coche se moverá de manera \textbf{concurrente} y actualizatá su posición en nuestra interfaz.
+  \item Cuando un coche cruce la meta, se registrará su \textbf{tiempo de llegada} y se actualizará la \textbf{clasificación}.
+\end{itemize}
+
+\subsection{Requisitos funcionales}
+\noindent A continuación, se listan los requisitos funcionales del sistema:
+
+\begin{table}[H]
+  \centering
+  \begin{tabularx}{\linewidth}{|l|Y|}
+    \hline
+    \textbf{ID} & \textbf{Descripción} \\
+    \hline
+    RF-01 & \textbf{Crear los coches}: cada coche tiene \texttt{nombre:String}, \texttt{finishDistance:int} y \texttt{speedMax:int}. \\
+    \hline
+    RF-02 & \textbf{Hilos de carrera}: cada coche se ejecutará en un \texttt{Thread}, para simular la carrera. \\
+    \hline
+    RF-03 & \textbf{Avance aleatorio}: el coche avanzará una distancia de manera aleatoria entre 0 y \texttt{speedMax}. \\
+    \hline
+    RF-04 & \textbf{Actualizar la interfaz}: la posición de cada coche se mostrará en la interfaz mediante el movimiento de su \texttt{ImageView}. \\
+    \hline
+    RF-05 & \textbf{Registro de llegada}: cuando un coche cruza la meta, se llamará al método \texttt{finish()} del controlador para registrar su tiempo y actualizar la clasificación. \\
+    \hline
+    RF-06 & \textbf{Clasificación en tiempo real}: la interfaz mostrará el orden de llegada de todos los coches y cuántos faltan por terminar. \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\clearpage
+
+\subsection{Requisitos no funcionales}
+\noindent A continuación, se listan los requisitos no funcionales del sistema:
+
+\begin{table}[H]
+  \centering
+  \begin{tabularx}{\linewidth}{|l|Y|}
+    \hline
+    \textbf{ID} & \textbf{Descripción} \\
+    \hline
+    RNF-01 & \textbf{Lenguaje}: el programa se desarrollo en \texttt{Java} usando \texttt{JavaFX} para crear la interfaz. \\
+    \hline
+    RNF-02 & \textbf{Experiencia de usuario}: crear una interfaz simple, clara y bonita, para mostrar la carrera. \\
+    \hline
+  \end{tabularx}
+\end{table}
+
+\section{Arquitectura del sistema}
+\subsection{Arquitectura general}
+\noindent La arquitectura de está aplicación se explicará en base a lo realizado en \texttt{JavaFX} ya que sigue una arquitectura \textbf{Modelo–Vista–Controlador (MVC)}.
+\begin{itemize}
+  \item \textbf{Modelo:} Tenemos la clase \texttt{Car} que representa el comportamiento de cada coche durante la carrera. Está tiene la lógica para el avance, el cálculo del tiempo de llegada a la meta y la comunicación con nuestro controlador.
+  \item \textbf{Vista:} Nuestra interfaz la tenenmos definida en el \texttt{index.fxml} y su hoja de estilos \texttt{index.css}. Muestra la pista de carreras, los coches mediante imágenes y la clasificación final de la carrera.
+  \item \textbf{Controlador:} Tenemos la clase \texttt{AppController} que nos permite coordinar la carrera: inicia los hilos, actualiza las posiciones de los coches y registra el orden de llegada a la meta.
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.6\linewidth]{MVC.png}
+  \caption{Arquitectura MVC}
+  \label{fig:arquitecture}
+\end{figure}
+
+\subsection{Stack empleado}
+\noindent Para el desarrollo de nuestra aplicación hemos utilizado las siguientes tecnologías:
+
+\begin{itemize}
+  \item \texttt{Java} como \textbf{lenguaje de programación} y entorno de ejecución.
+  \item \texttt{JavaFX} para crear la \textbf{interfaz gráfica} de nuestra aplicación.
+  \item \texttt{CSS} para dar estilos y mejorar la estética a nuestra interfaz.
+\end{itemize}
+
+\subsection{Interfaz}
+\noindent Para nuestra interfaz gráfica empleamos los siguientes elementos:
+
+\begin{itemize}
+  \item El \textbf{título} de nuestra aplicación.
+  \item Un \textbf{botón} para poder iniciar la carrera.
+  \item Una \textbf{pista de carreras} con los coches colocados en sus puestos de salida y la línea de meta.
+  \item Una \textbf{clasificación} donde se verá quien ha cruzado ya la meta.
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.65\linewidth]{interfaz.png}
+  \caption{Interfaz de la carrera en JavaFX}
+  \label{fig:interfaz}
+\end{figure}
+
+\clearpage
+
+\section{Gestión de hilos y uso de \texttt{synchronized}}
+\subsection{Concurrencia en la aplicación}
+\noindent En nuestra aplicación de \texttt{JavaFX}, cada coche se ejecuta en un hilo (la clase \texttt{Car} hereda de \texttt{Thread}).
+Pero todos estos hilos comparten el mismo \texttt{AppController}, que es el controlador de la interfaz.
+
+\vspace{1em}
+\noindent Cuando un coche cruza la línea de meta, este llama al siguiente método:
+
+\begin{lstlisting}[style=java]
+public synchronized void finish(String pilotName, long finishNano) {
+    pilots.add(pilotName);
+    times.add(finishNano);
+
+    // Ordenar por tiempo de llegada
+    List<Integer> index = new ArrayList<>();
+    for (int i = 0; i < times.size(); i++) {
+        index.add(i);
+    }
+    index.sort(Comparator.comparingLong(times::get));
+
+    // Crear la clasificacion
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < index.size(); i++) {
+        int position = index.get(i);
+        String pilot = pilots.get(position);
+        sb.append("#").append(position + 1)
+          .append(". ").append(pilot).append("\n");
+    }
+
+    // Comprobar si faltan coches
+    if (pilots.size() < 4) {
+        int restantes = 4 - pilots.size();
+        sb.append("\nFaltan por llegar ")
+          .append(restantes).append(" coche(s)...");
+    } else {
+        raceRunning = false;
+    }
+
+    // Actualizar interfaz
+    Platform.runLater(() -> {
+        classification.setText(sb.toString());
+        if (!raceRunning && startButton != null) {
+            startButton.setDisable(false);
+        }
+    });
+}
+\end{lstlisting}
+
+\subsection{Por qué utilizamos \texttt{synchronized} en \texttt{finish()}}
+\noindent Si no usamos \texttt{synchronized}, nos podrían succeder los siguientes problemas:
+
+\begin{itemize}
+  \item Los coches podrían cruzar la meta casi al mismo tiempo.
+  \item Cada hilo estaría llamando a \texttt{finish()} de manera simultánea.
+  \item Todos los hilos intentarían modificar al mismo tiempo las listas \texttt{pilots} y \texttt{times}, provocando estos fallos:
+  \begin{itemize}
+    \item Podrían perderse o eliminarse.
+    \item El orden de llegada podría mostrarse de manera érronea.
+    \item El nº de coches que faltan por llegar también estaría mal calculado.
+  \end{itemize}
+\end{itemize}
+
+\noindent Como usamos \texttt{synchronized} en nuestro método \texttt{finish()} este nos asegura:
+
+\begin{itemize}
+  \item Qué cada coche esperará su turno para poder registrar cuando cruza la meta.
+  \item Se actualizarán las listas y se calculará la clasificación de manera correcta.
+  \item Se mostrará en la interfaz el orden en el que cruzarón la meta de manera y el nº de coches que faltan por llegar de manera correcta.
+\end{itemize}
+
+\noindent En conclusión, Utilizamos \texttt{synchronized} para poder \textbf{proteger cuando actualizamos} el estado de la carrera, evitando así que varios hilos puedan chocar entre sí y asegurando que el resultado que mostremos sea el correcto.
+
+\end{document}
